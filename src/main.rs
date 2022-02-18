@@ -1,60 +1,51 @@
+use ansi_escapes::EraseLines;
 use proconio::input;
 use proconio::marker::Chars;
-use ansi_escapes::{EraseLines};
-use colored::*;
 
-#[derive(Debug)]
-struct Word(Vec<char>);
+mod word;
 
-impl Word {
-    fn print_diff(&self, answer: &Word) {
-        for (i, char) in self.0.iter().enumerate() {
-            let maybe_correct_char = answer.0.get(i);
-            match maybe_correct_char {
-                Some(correct_char) => {
-                    if char == correct_char {
-                        print!("{}", char.to_string().green());
-                    } else if answer.0.contains(char) {
-                        print!("{}", char.to_string().yellow());
-                    } else {
-                        print!("{}", char);
-                    }
-                }
-                None => {}
-            }
-        }
-        println!();
-    }
-
-    fn eq(&self, other: &Word) -> bool {
-        self.0 == other.0
-    }
-}
+const EXPECT_LENGTH: usize = 5;
 
 fn main() {
-    let answer = Word(['w', 'o', 'r', 'l', 'd'].to_vec());
+    // todo: ランダムで回答の単語を出力させる
+    let answer = word::Word::new(vec!['h', 'e', 'l', 'l', 'o']);
     let mut correct = false;
 
-    for _i in 0..6 {
+    let mut i = 0;
+    loop {
+        println!("{}", i);
         input! {
             chars: Chars,
         }
-        let input = Word(chars);
+        if !is_valid_length(chars.len()) {
+            println!("Enter a five-character word");
+            continue;
+        }
+
+        let input = word::Word::new(chars);
 
         print!("{}", EraseLines(2));
-        input.print_diff(&answer);
+        input.color_diff(&answer);
         if input.eq(&answer) {
             println!("Genius");
             correct = true;
             break;
         }
-        // println!("{:?}", input);
+        if i == 4 {
+            break;
+        }
+        i += 1;
     }
 
     if !correct {
-        println!("{}", answer.0.into_iter().collect::<String>());
+        show_answer(&answer);
     }
+}
 
-    // print!("{}", EraseLines(2));
+fn show_answer(answer: &word::Word) {
+    println!("{}", answer.text.iter().collect::<String>());
+}
 
+fn is_valid_length(len: usize) -> bool {
+    len == EXPECT_LENGTH
 }
