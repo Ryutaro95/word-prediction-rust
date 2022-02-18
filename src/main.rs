@@ -12,7 +12,6 @@ fn main() {
     let mut correct = false;
     let mut i = 0;
     loop {
-        println!("{}", i);
         input! {
             chars: Chars,
         }

@@ -1,4 +1,3 @@
-cargo-features = ["edition2021"]
 [package]
 name = "wordle-rust"
 version = "0.1.0"
