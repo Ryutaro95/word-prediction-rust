@@ -10,7 +10,6 @@ fn main() {
     // todo: ランダムで回答の単語を出力させる
     let answer = word::Word::new(vec!['h', 'e', 'l', 'l', 'o']);
     let mut correct = false;
-
     let mut i = 0;
     loop {
         println!("{}", i);
